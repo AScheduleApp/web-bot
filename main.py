@@ -1,7 +1,9 @@
 import hashlib
+import json
 import os
 from datetime import datetime
 
+import requests
 from selenium.webdriver.common.by import By
 
 from bot import WebBot
@@ -83,6 +85,8 @@ if __name__ == "__main__":
     print(f"MD5: {md5_file}")
     print("Sent file to API.")
     file.seek(0)
+    files = {"file": file}
+    requests.post("http://fastapi_app:8000/schedule", files=files)
     file.close()
     os.remove("/app/mediafiles/Lekarski semestr 3.xls")
     print(f"Finish bot at {datetime.now()} \n")
