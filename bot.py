@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 
 class WebBot:
     def __init__(
-            self, options: List[str] = (), experimental_options: Optional[dict] = ()
+        self, options: List[str] = (), experimental_options: Optional[dict] = ()
     ):
         service = Service()
         self.options = webdriver.ChromeOptions()

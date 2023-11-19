@@ -1,5 +1,7 @@
+import hashlib
 import os
-import time
+from datetime import datetime
+
 from selenium.webdriver.common.by import By
 
 from bot import WebBot
@@ -18,9 +20,17 @@ if __name__ == "__main__":
         "download.directory_upgrade": True,
         "safebrowsing.enabled": True,
     }
-    bot = WebBot(options=["--headless", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"], experimental_options=options)
+    bot = WebBot(
+        options=[
+            "--headless",
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-gpu",
+        ],
+        experimental_options=options,
+    )
 
-    print("Start bot...")
+    print(f"Start bot at {datetime.now()} \n")
 
     bot.open_page(
         url="https://auth-dziekanat.wst.com.pl/Account/Login?ReturnUrl=%2F",
@@ -40,6 +50,8 @@ if __name__ == "__main__":
     bot.click_button(
         by=By.ID, value="idSIButton9", time_sleep_sec=3
     )  # Redirect to YES or NO modal
+
+    print("Logged.")
 
     bot.click_button(
         by=By.ID, value="idSIButton9", time_sleep_sec=4
@@ -61,8 +73,16 @@ if __name__ == "__main__":
         value='//button[contains(text(), "Lekarski semestr 3")]',
         time_sleep_sec=5,
     )
+    print("Saved file.")
 
     bot.close_page()
 
-    print("Finish bot.")
-
+    file = open("/app/mediafiles/Lekarski semestr 3.xls", "rb")
+    file_binary_content = file.read()
+    md5_file = hashlib.md5(file_binary_content).hexdigest()
+    print(f"MD5: {md5_file}")
+    print("Sent file to API.")
+    file.seek(0)
+    file.close()
+    os.remove("/app/mediafiles/Lekarski semestr 3.xls")
+    print(f"Finish bot at {datetime.now()} \n")
