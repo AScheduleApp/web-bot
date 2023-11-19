@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/app
     container_name: bot
-    command: bash -c "while true; do python main.py; sleep 300; done"
+    command: bash -c "while true; do python main.py; sleep 60; done"
     env_file:
       - bot.env
     networks:
