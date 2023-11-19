@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "web-bot"
+version = "0.1.0"
+description = ""
+authors = ["Michał Wrona <wronamichal01@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+selenium = "^4.15.2"
+black = "^23.11.0"
+isort = "^5.12.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
