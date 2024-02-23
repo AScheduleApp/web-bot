@@ -14,6 +14,7 @@ PATH_SAVE_FILES = os.getenv(
     "PATH_SAVE_FILES", "/home/michal/workspaces/AScheduleApp/web-bot/media_files"
 )
 THRESHOLD_TIME_MIN = int(os.getenv("THRESHOLD_TIME", 5)) * 60
+FILE_NAME = os.getenv("FILE_NAME")
 
 if __name__ == "__main__":
     options = {
@@ -67,19 +68,19 @@ if __name__ == "__main__":
         url="https://dziekanat.wst.com.pl/pl/repozytorium-plikow", time_sleep_sec=5
     )  # Open page
 
-    bot.add_input(by=By.ID, value="nazwa-input", text="lekarski semestr 3")
+    bot.add_input(by=By.ID, value="nazwa-input", text=f"{FILE_NAME.lower()}")
     bot.click_button(by=By.XPATH, value='//button[text()="Szukaj"]', time_sleep_sec=1)
 
     bot.click_button(
         by=By.XPATH,
-        value='//button[contains(text(), "Lekarski semestr 3")]',
+        value=f'//button[contains(text(), "{FILE_NAME}")]',
         time_sleep_sec=5,
     )
     print("Saved file.")
 
     bot.close_page()
 
-    file = open("/app/mediafiles/Lekarski semestr 3.xls", "rb")
+    file = open(f"/app/mediafiles/{FILE_NAME}.xls", "rb")
     file_binary_content = file.read()
     md5_file = hashlib.md5(file_binary_content).hexdigest()
     print(f"MD5: {md5_file}")
@@ -88,5 +89,5 @@ if __name__ == "__main__":
     files = {"file": file}
     requests.post("http://fastapi_app:8000/schedule", files=files)
     file.close()
-    os.remove("/app/mediafiles/Lekarski semestr 3.xls")
+    os.remove(f"/app/mediafiles/{FILE_NAME}.xls")
     print(f"Finish bot at {datetime.now()} \n")
